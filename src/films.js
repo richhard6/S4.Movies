@@ -16,28 +16,48 @@ function getMoviesFromDirector(array, director) {
 }
 
 // Exercise 3: Calculate the average of the films of a given director.
-function moviesAverageOfDirector(array, director) {
+function moviesAverageOfDirector(array, directorOrCategory) {
+  const flag = directorOrCategory.split(' ');
+
   const reducer = (obj, val) => {
-    if (obj[val.director] == null) {
-      obj[val.director] = [val.score, 1];
+    if (obj[directorOrCategory] == null) {
+      obj[directorOrCategory] = [val.score, 1];
     } else {
-      let [rating, count] = obj[val.director];
-
+      let [rating, count] = obj[directorOrCategory];
+      if (val.score === '') {
+        count = count;
+      } else {
+        ++count;
+      }
       rating += val.score;
-
-      ++count;
-      obj[val.director] = [rating, count];
+      obj[directorOrCategory] = [rating, count];
     }
     return obj;
   };
 
-  const directorAverage = array.map((movie) => movie).reduce(reducer, {});
-  const [rating, occurence] = directorAverage[director];
-  directorAverage[director] = rating / occurence;
+  if (flag.length > 1) {
+    const directorAverage = array
+      .filter((movie) => movie.director === directorOrCategory)
+      .reduce(reducer, {});
 
-  //console.log('EXERCICE 3 ->', directorAverage[director]);
+    const [rating, occurence] = directorAverage[directorOrCategory];
+    directorAverage[directorOrCategory] = rating / occurence;
 
-  return directorAverage[director];
+    //console.log('EXERCICE 3 ->', directorAverage[director]);
+
+    return directorAverage[directorOrCategory];
+  } else {
+    const directorAverage = array
+      .filter((movie) => movie.genre.includes(directorOrCategory))
+      .reduce(reducer, {});
+
+    const [rating, occurence] = directorAverage[directorOrCategory];
+    directorAverage[directorOrCategory] = rating / occurence;
+
+    console.log(directorAverage[directorOrCategory]);
+
+    return directorAverage[directorOrCategory];
+  }
 }
 
 // Exercise 4:  Alphabetic order by title
@@ -74,73 +94,58 @@ function orderByYear(array) {
 
 // Exercise 6: Calculate the average of the movies in a category
 function moviesAverageByCategory(array, category) {
-  const reducer = (obj, val) => {
-    for (const i in val.genre) {
-      if (obj[val.genre] == null) {
-        obj[val.genre[i]] = [val.score, 1];
-      } else {
-        let [rating, count] = obj[val.genre[i]];
+  //reutilizar la del ejercicio 3 ..
 
-        if (val.score === '') {
-          count = count;
-        } else {
-          ++count;
-        }
-        rating += val.score;
+  const moviesAverageByCategory = moviesAverageOfDirector(array, category);
 
-        obj[val.genre[i]] = [Math.round(rating), count];
-      }
-    }
-
-    return obj;
-  };
-
-  const categoryAverage = array
-    .map((movie) => {
-      const { genre, score } = movie;
-
-      const formatted = { genre: genre, score: score };
-
-      return formatted;
-    })
-    .reduce(reducer, {});
-
-  const [rating, occurence] = categoryAverage[category];
-
-  return rating / occurence;
+  //console.log('EXERCICE 6->', moviesAverageByCategory);
+  return moviesAverageByCategory;
 }
 
 // Exercise 7: Modify the duration of movies to minutes
 function hoursToMinutes(array) {
-  const hey = array.map((movie) => {
+  const hoursToMinutes = array.map((movie) => {
     const toArray = movie.duration.includes(' ')
       ? movie.duration.split(' ')
-      : movie.duration;
+      : [movie.duration];
 
-    /*    const hourToMinutes = Math.round(hour.match(/\d/g)) * 60; */
-    /*     const minutesWithoutLetters = Math.round(minutes.match(/\d/g).join(''));
-    const newDuration = hourToMinutes + minutesWithoutLetters;
-    movie.duration = newDuration;  */
-    return toArray;
+    let movieObject;
+
+    if (toArray.length > 1) {
+      const [hour, minutes] = toArray; //no sirve porque hay veces que no se separa en dos porque es solo un valor Ex "2h"
+      const hourToMinutes = Math.round(hour.match(/\d/g)) * 60;
+      const minutesWithoutLetters = Math.round(minutes?.match(/\d/g)?.join(''));
+      const newDuration = hourToMinutes + minutesWithoutLetters;
+
+      movieObject = { duration: newDuration };
+
+      return { ...movie, ...movieObject };
+    } else {
+      const [hour] = toArray;
+      const hourToMinutes = Math.round(hour.match(/\d/g)) * 60;
+
+      const newDuration = hourToMinutes;
+
+      movieObject = { duration: newDuration };
+      return { ...movie, ...movieObject };
+    }
   });
-
-  const finish = hey.map((time) => {
-    const [hour, minutes] = time; //no sirve porque hay veces que no se separa en dos porque es solo un valor Ex "2h"
-    const hourToMinutes = Math.round(hour?.match(/\d/g)) * 60;
-    const minutesWithoutLetters = Math.round(minutes?.match(/\d/g)?.join(''));
-    const newDuration = hourToMinutes + minutesWithoutLetters;
-    return newDuration;
-  });
-
-  const yeah = array.map((movie) => (movie.duration = finish));
-
-  console.log(yeah);
-
-  return yeah;
+  //console.log('EXERCICE 7 ->', hoursToMinutes);
+  return hoursToMinutes;
 }
 
 // Exercise 8: Get the best film of a year
-function bestFilmOfYear() {}
+function bestFilmOfYear(array, year) {
+  const moviesByYear = array
+    .filter((movie) => movie.year === year)
+    .sort((a, b) => (a.score > b.score ? -1 : 1));
+
+  const [firstMovie] = moviesByYear;
+
+  const movieArray = [firstMovie];
+  //console.log('EXERCICE 8 ->', movieArray);
+  return movieArray;
+}
 
 // The following is required to make unit tests work.
 /* Environment setup. Do not modify the below code. */
