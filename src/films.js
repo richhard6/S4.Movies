@@ -1,7 +1,7 @@
 // Exercise 1: Get the array of all directors.
 function getAllDirectors(array) {
   const directors = array.map((movie) => movie.director);
-  //console.log('EXERCICE 1 ->', directors);
+  console.log('EXERCICE 1 ->', directors);
 
   return directors;
 }
@@ -9,7 +9,7 @@ function getAllDirectors(array) {
 // Exercise 2: Get the films of a certain director
 function getMoviesFromDirector(array, director) {
   const films = array.filter((movie) => movie.director === director);
-  //console.log('EXERCICE 2 ->', films);
+  console.log('EXERCICE 2 ->', films);
   return films;
 }
 
@@ -44,7 +44,7 @@ function moviesAverageOfDirector(array, directorOrCategory) {
   const [rating, occurence] = average[directorOrCategory];
   average[directorOrCategory] = rating / occurence;
 
-  //console.log('EXERCICE 3 ->', directorAverage[director]);
+  console.log('EXERCICE 3 ->', average[directorOrCategory]);
 
   return average[directorOrCategory];
 }
@@ -56,7 +56,7 @@ function orderAlphabetically(array) {
     .sort((a, b) => (a > b ? 1 : -1))
     .slice(0, 20);
 
-  //console.log('EXERCICE 4 ->', orderByTitle);
+  console.log('EXERCICE 4 ->', orderByTitle);
   return orderByTitle;
 }
 
@@ -68,6 +68,8 @@ function orderByYear(array) {
     .slice(0, 20)
     .map((movie) => {
       const { year, title } = movie;
+
+      console.log(movie);
       const formated = [
         {
           title: title,
@@ -78,7 +80,7 @@ function orderByYear(array) {
       return formated[0];
     });
 
-  //console.log('EXERCICE 5 ->', orderByYear);
+  console.log('EXERCICE 5 ->', orderByYear);
   return orderByYear;
 }
 
@@ -86,7 +88,7 @@ function orderByYear(array) {
 function moviesAverageByCategory(array, category) {
   const moviesAverageByCategory = moviesAverageOfDirector(array, category);
 
-  //console.log('EXERCICE 6->', moviesAverageByCategory);
+  console.log('EXERCICE 6->', moviesAverageByCategory);
   return moviesAverageByCategory;
 }
 
@@ -109,7 +111,7 @@ function hoursToMinutes(array) {
 
     return { ...movie, ...movieObject };
   });
-  //console.log('EXERCICE 7 ->', hoursToMinutes);
+  console.log('EXERCICE 7 ->', hoursToMinutes);
   return hoursToMinutes;
 }
 
@@ -122,7 +124,7 @@ function bestFilmOfYear(array, year) {
   const [firstMovie] = moviesByYear;
 
   const movieArray = [firstMovie];
-  //console.log('EXERCICE 8 ->', movieArray);
+  console.log('EXERCICE 8 ->', movieArray);
   return movieArray;
 }
 
