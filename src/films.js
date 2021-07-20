@@ -15,7 +15,7 @@ function getMoviesFromDirector(array, director) {
 
 // Exercise 3: Calculate the average of the films of a given director.
 function moviesAverageOfDirector(array, directorOrCategory) {
-  const flag = directorOrCategory.split(' ');
+  const isDirector = directorOrCategory.split(' ');
 
   const reducer = (obj, val) => {
     if (obj[directorOrCategory] == null) {
@@ -33,29 +33,20 @@ function moviesAverageOfDirector(array, directorOrCategory) {
     return obj;
   };
 
-  if (flag.length > 1) {
-    const directorAverage = array
-      .filter((movie) => movie.director === directorOrCategory)
-      .reduce(reducer, {});
+  const average = array
+    .filter((movie) =>
+      isDirector.length > 1
+        ? movie.director === directorOrCategory
+        : movie.genre.includes(directorOrCategory)
+    )
+    .reduce(reducer, {});
 
-    const [rating, occurence] = directorAverage[directorOrCategory];
-    directorAverage[directorOrCategory] = rating / occurence;
+  const [rating, occurence] = average[directorOrCategory];
+  average[directorOrCategory] = rating / occurence;
 
-    //console.log('EXERCICE 3 ->', directorAverage[director]);
+  //console.log('EXERCICE 3 ->', directorAverage[director]);
 
-    return directorAverage[directorOrCategory];
-  } else {
-    const directorAverage = array
-      .filter((movie) => movie.genre.includes(directorOrCategory))
-      .reduce(reducer, {});
-
-    const [rating, occurence] = directorAverage[directorOrCategory];
-    directorAverage[directorOrCategory] = rating / occurence;
-
-    console.log(directorAverage[directorOrCategory]);
-
-    return directorAverage[directorOrCategory];
-  }
+  return average[directorOrCategory];
 }
 
 // Exercise 4:  Alphabetic order by title
@@ -83,6 +74,7 @@ function orderByYear(array) {
           year: year
         }
       ];
+
       return formated[0];
     });
 
@@ -110,7 +102,7 @@ function hoursToMinutes(array) {
     const [hour, minutes] = toArray; //no sirve porque hay veces que no se separa en dos porque es solo un valor Ex "2h"
     const hourToMinutes = Math.round(hour.match(/\d/g)) * 60;
     const minutesWithoutLetters =
-      Math.round(minutes?.match(/\d/g)?.join('')) || 0;
+      Math.round(minutes?.match(/\d/g).join('')) || 0;
     const newDuration = hourToMinutes + minutesWithoutLetters;
 
     movieObject = { duration: newDuration };
