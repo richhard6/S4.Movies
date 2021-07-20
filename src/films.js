@@ -18,7 +18,7 @@ function moviesAverageOfDirector(array, directorOrCategory) {
   const isDirector = directorOrCategory.split(' ');
 
   const reducer = (obj, val) => {
-    if (obj[directorOrCategory] == null) {
+    if (obj[directorOrCategory] === undefined) {
       obj[directorOrCategory] = [val.score, 1];
     } else {
       let [rating, count] = obj[directorOrCategory];
