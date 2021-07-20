@@ -1,5 +1,3 @@
-import { movies as movies } from './data.js';
-
 // Exercise 1: Get the array of all directors.
 function getAllDirectors(array) {
   const directors = array.map((movie) => movie.director);
@@ -94,8 +92,6 @@ function orderByYear(array) {
 
 // Exercise 6: Calculate the average of the movies in a category
 function moviesAverageByCategory(array, category) {
-  //reutilizar la del ejercicio 3 ..
-
   const moviesAverageByCategory = moviesAverageOfDirector(array, category);
 
   //console.log('EXERCICE 6->', moviesAverageByCategory);
@@ -111,24 +107,15 @@ function hoursToMinutes(array) {
 
     let movieObject;
 
-    if (toArray.length > 1) {
-      const [hour, minutes] = toArray; //no sirve porque hay veces que no se separa en dos porque es solo un valor Ex "2h"
-      const hourToMinutes = Math.round(hour.match(/\d/g)) * 60;
-      const minutesWithoutLetters = Math.round(minutes?.match(/\d/g)?.join(''));
-      const newDuration = hourToMinutes + minutesWithoutLetters;
+    const [hour, minutes] = toArray; //no sirve porque hay veces que no se separa en dos porque es solo un valor Ex "2h"
+    const hourToMinutes = Math.round(hour.match(/\d/g)) * 60;
+    const minutesWithoutLetters =
+      Math.round(minutes?.match(/\d/g)?.join('')) || 0;
+    const newDuration = hourToMinutes + minutesWithoutLetters;
 
-      movieObject = { duration: newDuration };
+    movieObject = { duration: newDuration };
 
-      return { ...movie, ...movieObject };
-    } else {
-      const [hour] = toArray;
-      const hourToMinutes = Math.round(hour.match(/\d/g)) * 60;
-
-      const newDuration = hourToMinutes;
-
-      movieObject = { duration: newDuration };
-      return { ...movie, ...movieObject };
-    }
+    return { ...movie, ...movieObject };
   });
   //console.log('EXERCICE 7 ->', hoursToMinutes);
   return hoursToMinutes;
